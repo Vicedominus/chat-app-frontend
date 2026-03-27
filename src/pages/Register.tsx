@@ -19,7 +19,12 @@ export default function Register() {
       setSuccess('Usuario creado exitosamente. Redirigiendo...');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err: any) {
-      setError('Error al crear usuario. Verifica los datos.');
+      if (err.response?.data) {
+        const errorMsg = Object.values(err.response.data).flat().join('. ');
+        setError(errorMsg || 'Error al crear usuario. Verifica los datos.');
+      } else {
+        setError('Error al crear usuario. Verifica la conexión con el servidor.');
+      }
     }
   };
 
